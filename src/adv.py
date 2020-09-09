@@ -1,7 +1,8 @@
 from room import Room
-
+from player import Player
 # Declare all the rooms
 
+# creating instances of Room as values of room dictionary
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -36,16 +37,77 @@ room['treasure'].s_to = room['narrow']
 #
 # Main
 #
-
+name = input("enter name: ")
 # Make a new player object that is currently in the 'outside' room.
-
+player = Player(name, room['outside'])
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+while name and player.room == room['outside']:
+    print(player.room.location)
+    print(player.room.description)
+    next = input("where now? ")
+    if next == "n":
+        player.room = room['foyer']
+        while name and player.room == room['foyer']:
+            print(player.room.location)
+            print(player.room.description)
+            next = input("where now? ")
+            if next == "n":
+                player.room = room['overlook']
+                while name and player.room == room['overlook']:
+                    print(player.room.location)
+                    print(player.room.description)
+                    next = input("where now? ")
+                    if next == "s":
+                        player.room = room['foyer']
+                    elif next == "q":
+                        print("goodbye")
+                        break
+                    else:
+                        print("error, direction does not exist")
+            elif next == "s":
+                player.room = room['outside']
+            elif next == "e":
+                player.room = room['narrow']
+                while name and player.room == room['narrow']:
+                    print(player.room.location)
+                    print(player.room.description)
+                    next = input("where now? ")
+                    if next == "n":
+                        player.room = room['treasure']
+                        while name and player.room == room['treasure']:
+                            print(player.room.location)
+                            print(player.room.description)
+                            next = input("where now? ")
+                            if next == "s":
+                                player.room = room['narrow']
+                            elif next == "q":
+                                print("goodbye")
+                                break
+                            else:
+                                print("error, direction does not exist")
+                    elif next == "w":
+                        player.room = room['foyer']
+                    elif next == "q":
+                        print("goodbye")
+                        break
+                    else:
+                        print("error, direction does not exist")
+            elif next == "q":
+                print("goodbye")
+                break
+            else:
+                print("error, direction does not exist")
+    elif next == "q":
+        print("goodbye")
+        break
+    else:
+        print("error, direction does not exist")
+
+    # If the user enters a cardinal direction, attempt to move to the room there.
+    # Print an error message if the movement isn't allowed.
+    #
+    # If the user enters "q", quit the game.
